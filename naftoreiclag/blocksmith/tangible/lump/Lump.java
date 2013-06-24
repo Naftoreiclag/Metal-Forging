@@ -20,31 +20,31 @@ public class Lump extends Item
 	public Lump(int id)
 	{
 		super(id);
-        setHasSubtypes(true);
-        setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	
 	// Returns appropriate name from a certain metadata
 	@Override
 	public String getUnlocalizedName(ItemStack itemStack)
-    {
+	{
 		int metadata = itemStack.getItemDamage();
 		
 		for(Smaterial s : RegistrySmaterial.smList)
 		{
 			if(s.getMetaId() == metadata)
 			{
-		        return super.getUnlocalizedName() + "." + s.getInternalName();
+				return super.getUnlocalizedName() + "." + s.getInternalName();
 			}
 		}
 
-        return super.getUnlocalizedName() + ".error";
-    }
+		return super.getUnlocalizedName() + ".error";
+	}
 	
 	// Returns the friendly adjective; used by LanguageRegistery since this class can't access the language
 	public String getFriendlyAdjective(int metadata)
-    {
+	{
 		for(Smaterial s : RegistrySmaterial.smList)
 		{
 			if(s.getMetaId() == metadata)
@@ -53,24 +53,24 @@ public class Lump extends Item
 			}
 		}
 		return "Erroneous";
-    }
+	}
 	
 	// Gets all subitems for the creative tabs; reused to get all metadatas
 	@SideOnly(Side.CLIENT)
 	@Override
-    public void getSubItems(int id, CreativeTabs par2CreativeTabs, List listOfItemStacks)
-    {
+	public void getSubItems(int id, CreativeTabs par2CreativeTabs, List listOfItemStacks)
+	{
 		for(Smaterial s : RegistrySmaterial.smList)
 		{
-            listOfItemStacks.add(new ItemStack(id, 1, s.getMetaId()));
-        }
-    }
+			listOfItemStacks.add(new ItemStack(id, 1, s.getMetaId()));
+		}
+	}
 	
 	// Returns the right visual for given metadata
 	@SideOnly(Side.CLIENT)
 	@Override
 	public Icon getIconFromDamage(int metadata)
-    {
+	{
 		for(Smaterial s : RegistrySmaterial.smList)
 		{
 			if(s.getMetaId() == metadata)
@@ -79,7 +79,7 @@ public class Lump extends Item
 			}
 		}
 		return itemIcon;
-    }
+	}
 	
 	// Called on init
 	@SideOnly(Side.CLIENT)

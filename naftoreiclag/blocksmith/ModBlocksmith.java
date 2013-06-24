@@ -50,47 +50,47 @@ public class ModBlocksmith
 	public static Item item_lump;
 	
 	@PreInit
-    public void preInit(FMLPreInitializationEvent event)
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		logger = Logger.getLogger(modid);
 		logger.setParent(FMLLog.getLogger());
 		
 		logger.log(Level.INFO, "PRE INIT EVENT");
 		
-    	// Read config files
-    }
-    
-    @Init
-    public void load(FMLInitializationEvent event)
-    {
+		// Read config files
+	}
+	
+	@Init
+	public void load(FMLInitializationEvent event)
+	{
 		logger.log(Level.INFO, "INIT EVENT");
 		
-    	// lump
-    	item_lump = new Lump(idOffset + 0);
-    	
-    	// smaterials
-    	smat_iron = RegistrySmaterial.newSmaterial(0, "iron").setFriendlyAdjective("Iron").setMeltingPoint(1500); // vanilla
-    	smat_copper = RegistrySmaterial.newSmaterial(1, "copper").setFriendlyAdjective("Copper").setMeltingPoint(1000); // ic2
-    	smat_gold = RegistrySmaterial.newSmaterial(2, "gold").setFriendlyAdjective("Gold").setMeltingPoint(1000); // vanila
-    	smat_tin = RegistrySmaterial.newSmaterial(3, "tin").setFriendlyAdjective("Tin").setMeltingPoint(250); // ic2
-    	smat_silver = RegistrySmaterial.newSmaterial(4, "silver").setFriendlyAdjective("Silver").setMeltingPoint(1000); // rp2
-    	smat_glass = RegistrySmaterial.newSmaterial(255, "glass").setFriendlyAdjective("Glass").setMeltingPoint(1500); // vanilla
-    	
-    	// Name all the lumps
-    	List<ItemStack> lumps = new LinkedList<ItemStack>();
-    	item_lump.getSubItems(item_lump.itemID, null, lumps);
-    	for(ItemStack i : lumps)
-    	{
-    		LanguageRegistry.addName(i, ((Lump) item_lump).getFriendlyAdjective(i.getItemDamage()) + " Lump");
-    	}
+		// lump
+		item_lump = new Lump(idOffset + 0);
+		
+		// smaterials
+		smat_iron = RegistrySmaterial.newSmaterial(0, "iron").setFriendlyAdjective("Iron").setMeltingPoint(1500); // vanilla
+		smat_copper = RegistrySmaterial.newSmaterial(1, "copper").setFriendlyAdjective("Copper").setMeltingPoint(1000); // ic2
+		smat_gold = RegistrySmaterial.newSmaterial(2, "gold").setFriendlyAdjective("Gold").setMeltingPoint(1000); // vanila
+		smat_tin = RegistrySmaterial.newSmaterial(3, "tin").setFriendlyAdjective("Tin").setMeltingPoint(250); // ic2
+		smat_silver = RegistrySmaterial.newSmaterial(4, "silver").setFriendlyAdjective("Silver").setMeltingPoint(1000); // rp2
+		smat_glass = RegistrySmaterial.newSmaterial(255, "glass").setFriendlyAdjective("Glass").setMeltingPoint(1500); // vanilla
+		
+		// Name all the lumps
+		List<ItemStack> lumps = new LinkedList<ItemStack>();
+		item_lump.getSubItems(item_lump.itemID, null, lumps);
+		for(ItemStack i : lumps)
+		{
+			LanguageRegistry.addName(i, ((Lump) item_lump).getFriendlyAdjective(i.getItemDamage()) + " Lump");
+		}
 		GameRegistry.registerItem(item_lump, modid + ".lump");
-    }
-    
-    @PostInit
-    public void postInit(FMLPostInitializationEvent event)
-    {
+	}
+	
+	@PostInit
+	public void postInit(FMLPostInitializationEvent event)
+	{
 		logger.log(Level.INFO, "POST INIT EVENT");
 		
-    	// Interact with other mods
-    }
+		// Interact with other mods
+	}
 }

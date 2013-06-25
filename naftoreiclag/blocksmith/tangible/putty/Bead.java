@@ -21,7 +21,7 @@ public class Bead extends Item
 		super(id);
 		setHasSubtypes(true);
 		setMaxDamage(0);
-		setCreativeTab(CreativeTabs.tabMaterials);
+		setCreativeTab(ModBlocksmith.creativetab_smithing);
 	}
 	
 	// Returns appropriate name from a certain metadata

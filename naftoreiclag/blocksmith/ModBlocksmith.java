@@ -8,8 +8,10 @@ import java.util.logging.Logger;
 import naftoreiclag.blocksmith.tangible.putty.Bead;
 import naftoreiclag.blocksmith.tangible.putty.Lump;
 import naftoreiclag.blocksmith.vector.Smaterial;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StringTranslate;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -21,6 +23,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 // Declare that this is a mod
 @Mod(modid = ModBlocksmith.modid, name = "Blocksmith", version = "indev_1.0.0")
@@ -38,7 +42,7 @@ public class ModBlocksmith
 	// Id offset
 	public static final int idOffset = 2013;
 	
-	//
+	// Do I really need these?
 	private static Smaterial smat_iron;
 	private static Smaterial smat_copper;
 	private static Smaterial smat_gold;
@@ -52,11 +56,16 @@ public class ModBlocksmith
 	private static Smaterial smat_lapis;
 	private static Smaterial smat_quartz;
 	private static Smaterial smat_redstone;
+	private static Smaterial smat_steel;
 	private static Smaterial smat_glass;
 	
 	//
 	public static Item item_lump;
 	public static Item item_bead;
+	
+	//
+	@SideOnly(Side.CLIENT)
+	public static CreativeTabs creativetab_smithing;
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -73,6 +82,9 @@ public class ModBlocksmith
 	public void load(FMLInitializationEvent event)
 	{
 		logger.log(Level.INFO, "INIT EVENT");
+		
+		// creative tabs
+		registerCreativeTabs();
 		
 		// lump
 		item_lump = new Lump(idOffset + 0).setUnlocalizedName("lump");
@@ -92,9 +104,29 @@ public class ModBlocksmith
 		smat_lapis = 		Smaterial.newSmaterial( 10, "lapis").setMeltingPoint(-1).setFriendlyAdjective("Lazurite"); // vanilla
 		smat_quartz = 		Smaterial.newSmaterial( 11, "quartz").setMeltingPoint(-1); // vanilla
 		smat_redstone = 	Smaterial.newSmaterial( 12, "redstone").setMeltingPoint(-1); // vanilla
+		smat_steel = 		Smaterial.newSmaterial( 13, "steel").setMeltingPoint(2500).setMakesBeads(false); // rc
 		smat_glass = 		Smaterial.newSmaterial(255, "glass").setMeltingPoint(1500); // vanilla
+	}
+	
+	@PostInit
+	public void postInit(FMLPostInitializationEvent event)
+	{
+		logger.log(Level.INFO, "POST INIT EVENT");
+		
+		// TODO: Interact with other mods
 		
 		// Name all the things
+		registerNames();
+	}
+
+	// Auxilary function for registering the names
+	@SideOnly(Side.CLIENT)
+	private void registerNames()
+	{
+		// Creative tabs
+		LanguageRegistry.instance().addStringLocalization("itemGroup.tabSmithing", "Smithing");
+		
+		// Lumps
 		List<ItemStack> lumps = new LinkedList<ItemStack>();
 		item_lump.getSubItems(item_lump.itemID, null, lumps);
 		for(ItemStack i : lumps)
@@ -103,6 +135,7 @@ public class ModBlocksmith
 		}
 		GameRegistry.registerItem(item_lump, modid + ".lump");
 
+		// Beads
 		List<ItemStack> beads = new LinkedList<ItemStack>();
 		item_bead.getSubItems(item_bead.itemID, null, beads);
 		for(ItemStack i : beads)
@@ -112,11 +145,16 @@ public class ModBlocksmith
 		GameRegistry.registerItem(item_bead, modid + ".bead");
 	}
 	
-	@PostInit
-	public void postInit(FMLPostInitializationEvent event)
+	//
+	@SideOnly(Side.CLIENT)
+	private void registerCreativeTabs()
 	{
-		logger.log(Level.INFO, "POST INIT EVENT");
-		
-		// Interact with other mods
+		creativetab_smithing = new CreativeTabs("tabSmithing")
+		{
+			public ItemStack getIconItemStack()
+			{
+				return new ItemStack(ModBlocksmith.item_lump, 1, 13);
+			}
+		};
 	}
 }

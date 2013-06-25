@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import naftoreiclag.blocksmith.registry.RegistrySmaterial;
-import naftoreiclag.blocksmith.registry.Smaterial;
 import naftoreiclag.blocksmith.tangible.putty.Bead;
 import naftoreiclag.blocksmith.tangible.putty.Lump;
+import naftoreiclag.blocksmith.vector.Smaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.FMLLog;
@@ -80,20 +79,20 @@ public class ModBlocksmith
 		item_bead = new Bead(idOffset + 1).setUnlocalizedName("bead");
 		
 		// smaterials
-		smat_iron = RegistrySmaterial.newSmaterial(0, "iron").setFriendlyAdjective("Iron").setMeltingPoint(1500).setMakesBeads(true); // vanilla
-		smat_copper = RegistrySmaterial.newSmaterial(1, "copper").setFriendlyAdjective("Copper").setMeltingPoint(1000).setMakesBeads(true); // ic2
-		smat_gold = RegistrySmaterial.newSmaterial(2, "gold").setFriendlyAdjective("Gold").setMeltingPoint(1000).setMakesBeads(true); // vanila
-		smat_tin = RegistrySmaterial.newSmaterial(3, "tin").setFriendlyAdjective("Tin").setMeltingPoint(250).setMakesBeads(true); // ic2
-		smat_silver = RegistrySmaterial.newSmaterial(4, "silver").setFriendlyAdjective("Silver").setMeltingPoint(1000).setMakesBeads(true); // rp2
-		smat_diamond = RegistrySmaterial.newSmaterial(5, "diamond").setFriendlyAdjective("Diamond").setMeltingPoint(-1).setMakesBeads(true); // vanilla
-		smat_emerald = RegistrySmaterial.newSmaterial(6, "emerald").setFriendlyAdjective("Emerald").setMeltingPoint(-1).setMakesBeads(true); // vanilla
-		smat_ender = RegistrySmaterial.newSmaterial(7, "ender").setFriendlyAdjective("Pearly").setMeltingPoint(-1).setMakesBeads(true); // vanilla
-		smat_flint = RegistrySmaterial.newSmaterial(8, "flint").setFriendlyAdjective("Flint").setMeltingPoint(-1).setMakesBeads(true); // vanilla
-		smat_glowstone = RegistrySmaterial.newSmaterial(9, "glowstone").setFriendlyAdjective("Glowing").setMeltingPoint(-1).setMakesBeads(true); // vanilla
-		smat_lapis = RegistrySmaterial.newSmaterial(10, "lapis").setFriendlyAdjective("Lazurite").setMeltingPoint(-1).setMakesBeads(true); // vanilla
-		smat_quartz = RegistrySmaterial.newSmaterial(11, "quartz").setFriendlyAdjective("Quartz").setMeltingPoint(-1).setMakesBeads(true); // vanilla
-		smat_redstone = RegistrySmaterial.newSmaterial(12, "redstone").setFriendlyAdjective("Redstone").setMeltingPoint(-1).setMakesBeads(true); // vanilla
-		smat_glass = RegistrySmaterial.newSmaterial(255, "glass").setFriendlyAdjective("Glass").setMeltingPoint(1500).setMakesBeads(true); // vanilla
+		smat_iron = Smaterial.newSmaterial(0, "iron").setFriendlyAdjective("Iron").setMeltingPoint(1500).setMakesBeads(true); // vanilla
+		smat_copper = Smaterial.newSmaterial(1, "copper").setFriendlyAdjective("Copper").setMeltingPoint(1000).setMakesBeads(true); // ic2
+		smat_gold = Smaterial.newSmaterial(2, "gold").setFriendlyAdjective("Gold").setMeltingPoint(1000).setMakesBeads(true); // vanila
+		smat_tin = Smaterial.newSmaterial(3, "tin").setFriendlyAdjective("Tin").setMeltingPoint(250).setMakesBeads(true); // ic2
+		smat_silver = Smaterial.newSmaterial(4, "silver").setFriendlyAdjective("Silver").setMeltingPoint(1000).setMakesBeads(true); // rp2
+		smat_diamond = Smaterial.newSmaterial(5, "diamond").setFriendlyAdjective("Diamond").setMeltingPoint(-1).setMakesBeads(true); // vanilla
+		smat_emerald = Smaterial.newSmaterial(6, "emerald").setFriendlyAdjective("Emerald").setMeltingPoint(-1).setMakesBeads(true); // vanilla
+		smat_ender = Smaterial.newSmaterial(7, "ender").setFriendlyAdjective("Pearly").setMeltingPoint(-1).setMakesBeads(true); // vanilla
+		smat_flint = Smaterial.newSmaterial(8, "flint").setFriendlyAdjective("Flint").setMeltingPoint(-1).setMakesBeads(true); // vanilla
+		smat_glowstone = Smaterial.newSmaterial(9, "glowstone").setFriendlyAdjective("Glowing").setMeltingPoint(-1).setMakesBeads(true); // vanilla
+		smat_lapis = Smaterial.newSmaterial(10, "lapis").setFriendlyAdjective("Lazurite").setMeltingPoint(-1).setMakesBeads(true); // vanilla
+		smat_quartz = Smaterial.newSmaterial(11, "quartz").setFriendlyAdjective("Quartz").setMeltingPoint(-1).setMakesBeads(true); // vanilla
+		smat_redstone = Smaterial.newSmaterial(12, "redstone").setFriendlyAdjective("Redstone").setMeltingPoint(-1).setMakesBeads(true); // vanilla
+		smat_glass = Smaterial.newSmaterial(255, "glass").setFriendlyAdjective("Glass").setMeltingPoint(1500).setMakesBeads(true); // vanilla
 		
 		// Name all the things
 		List<ItemStack> lumps = new LinkedList<ItemStack>();

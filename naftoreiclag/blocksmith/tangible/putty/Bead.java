@@ -5,8 +5,7 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import naftoreiclag.blocksmith.ModBlocksmith;
-import naftoreiclag.blocksmith.registry.RegistrySmaterial;
-import naftoreiclag.blocksmith.registry.Smaterial;
+import naftoreiclag.blocksmith.vector.Smaterial;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -29,7 +28,7 @@ public class Bead extends Item
 	@Override
 	public String getUnlocalizedName(ItemStack itemStack)
 	{
-		Smaterial s = RegistrySmaterial.getSmaterialFromMetadata(itemStack.getItemDamage());
+		Smaterial s = Smaterial.getSmaterialFromMetadata(itemStack.getItemDamage());
 		if(s != null)
 		{
 			return getUnlocalizedName() + "." + s.getInternalName();
@@ -46,7 +45,7 @@ public class Bead extends Item
 	// Get the friendly adjective of this item from the given metadata
 	protected String getFriendlyAdjective(int metadata)
 	{
-		for(Smaterial s : RegistrySmaterial.smList)
+		for(Smaterial s : Smaterial.smList)
 		{
 			if(s.getMetaId() == metadata)
 			{
@@ -60,7 +59,7 @@ public class Bead extends Item
 	// Override me for subclasses
 	protected String getFriendlyName(int metadata)
 	{
-		Smaterial s = RegistrySmaterial.getSmaterialFromMetadata(metadata);
+		Smaterial s = Smaterial.getSmaterialFromMetadata(metadata);
 		if(s != null)
 		{
 			return s.getFriendlyBeadAlias();
@@ -73,7 +72,7 @@ public class Bead extends Item
 	@Override
 	public void getSubItems(int id, CreativeTabs par2CreativeTabs, List listOfItemStacks)
 	{
-		for(Smaterial s : RegistrySmaterial.smList)
+		for(Smaterial s : Smaterial.smList)
 		{
 			if(validWith(s))
 			{
@@ -88,7 +87,7 @@ public class Bead extends Item
 	@Override
 	public Icon getIconFromDamage(int metadata)
 	{
-		Smaterial s = RegistrySmaterial.getSmaterialFromMetadata(metadata);
+		Smaterial s = Smaterial.getSmaterialFromMetadata(metadata);
 		if(s != null)
 		{
 			return s.iconBead;
@@ -110,7 +109,7 @@ public class Bead extends Item
 	public void registerIcons(IconRegister iconRegister)
 	{
 		// Tells the smaterials to register their icons
-		RegistrySmaterial.registerSmaterialIcons(iconRegister);
+		Smaterial.registerSmaterialIcons(iconRegister);
 		
 		// Just in case something weird happens
 		itemIcon = iconRegister.registerIcon(ModBlocksmith.modid + ":error");

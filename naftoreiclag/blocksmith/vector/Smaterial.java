@@ -1,7 +1,9 @@
-package naftoreiclag.blocksmith.registry;
+package naftoreiclag.blocksmith.vector;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
 import naftoreiclag.blocksmith.tangible.putty.Bead;
@@ -15,6 +17,96 @@ import cpw.mods.fml.relauncher.SideOnly;
 // Vector containing all information about a given smaterial
 public class Smaterial
 {
+	// Keeps track of all created smaterials
+	/****************************
+	 * Start Registry / Manager *
+	 ****************************/
+	
+	// Keeps track of whether the icons were registered or not
+	@SideOnly(Side.CLIENT)
+	private static boolean smaterialIconsRegistered = false;
+	
+	// A list of all registered smaterials
+	public static List<Smaterial> smList = new LinkedList<Smaterial>();
+	
+	// Makes a new smaterial and returns it
+	public static Smaterial newSmaterial(int metadata, String internalName)
+	{
+		// Checks to make sure that smaterials are not being overwriten
+		for(Smaterial s : smList)
+		{
+			// If they share the same value
+			if(s.getMetaId() == metadata)
+			{
+				// Uh oh, someone is trying to overwrite it!
+				
+				// Warn them
+				ModBlocksmith.logger.log(Level.WARNING, "Smithing material is being overwriten! Bugs imminent! (Metadata/Metaid: " + metadata + ")");
+				ModBlocksmith.logger.log(Level.WARNING, "Attempting to replace " + s.getInternalName() + " with " + internalName + "!");
+				
+				// Remove the old one
+				smList.remove(s);
+			}
+		}
+		
+		// Make a new smaterial
+		Smaterial s = new Smaterial(internalName, metadata);
+		smList.add(s);
+		
+		// Inform
+		ModBlocksmith.logger.log(Level.INFO, "Smithing material: " + internalName + " registered with metaid: " + metadata);
+		
+		// Return
+		return s;
+	}
+	
+	// Register the icons if they haven't already been registered
+	@SideOnly(Side.CLIENT)
+	public static void registerSmaterialIcons(IconRegister iconRegister)
+	{
+		// Check to make sure that we haven't already registered the icons
+		if(!smaterialIconsRegistered)
+		{
+			// Iterate through all smaterials
+			for(Smaterial s : smList)
+			{
+				// Call its icon registry method
+				s.registerIcon(iconRegister);
+			}
+			
+			// Remember that we did this so we don't have to do it again
+			smaterialIconsRegistered = true;
+			
+			// Inform
+			ModBlocksmith.logger.log(Level.INFO, "Smith materials finalized! Loaded " + smList.size() + " smithing materials!");
+		}
+	}
+	
+	// Returns the appropriate smaterial from the given metadata
+	public static Smaterial getSmaterialFromMetadata(int metadata)
+	{
+		// Iterate through all smaterials
+		for(Smaterial s : smList)
+		{
+			// Check if its the one we want
+			if(s.getMetaId() == metadata)
+			{
+				// Ooh it is! Return it
+				return s;
+			}
+		}
+
+		// Inform
+		ModBlocksmith.logger.log(Level.SEVERE, "Cannot find smaterial with metaId: " + metadata + "! Returning null!");
+		
+		// Guess we didn't find it
+		return null;
+	}
+	
+	/**************************
+	 * End Registry / Manager *
+	 **************************/
+	
 	// The name used in all those internal strings
 	private String internalName;
 	public String getInternalName() { return internalName + ""; }

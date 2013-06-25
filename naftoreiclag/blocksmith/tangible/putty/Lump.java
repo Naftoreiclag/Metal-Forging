@@ -5,8 +5,7 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import naftoreiclag.blocksmith.ModBlocksmith;
-import naftoreiclag.blocksmith.registry.RegistrySmaterial;
-import naftoreiclag.blocksmith.registry.Smaterial;
+import naftoreiclag.blocksmith.vector.Smaterial;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -34,7 +33,7 @@ public class Lump extends Bead
 	@Override
 	public Icon getIconFromDamage(int metadata)
 	{
-		Smaterial s = RegistrySmaterial.getSmaterialFromMetadata(metadata);
+		Smaterial s = Smaterial.getSmaterialFromMetadata(metadata);
 		if(s != null)
 		{
 			return s.iconLump;

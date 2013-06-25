@@ -1,0 +1,18 @@
+[
+{
+  "modid": "nrBlocksmith",
+  "name": "Blocksmith",
+  "description": "Hardcore crafting",
+  "url": "http://www.example.com/",
+  "version": "1.0.0",
+  "mcversion": "1.5.2",
+  "credits": "Made by me, but thanks to everyone in the \n
+  community willing to help aspiring mod devs!",
+  "authors": [ "Naftoreiclag" ],
+  "logoFile": "/mods/nrBlocksmith/blocksmith_logo.png",
+  "updateUrl": "",
+  "parent":"",
+  "screenshots": [],
+  "dependencies": []
+}
+]

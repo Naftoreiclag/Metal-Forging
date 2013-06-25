@@ -116,10 +116,16 @@ public class Smaterial
 	public int getMetaId() { return metaId; }
 	
 	// Constructor
-	protected Smaterial(String internalName, int metadata)
+	private Smaterial(String internalName, int metadata)
 	{
+		// The name used for internal function
 		this.internalName = internalName;
+		
+		// The metadata for items
 		this.metaId = metadata;
+		
+		// Sets the friendly adjective to be the internalName in proper case by default
+		this.setFriendlyAdjective(internalName.substring(0, 1).toUpperCase() + internalName.substring(1).toLowerCase());
 	}
 	
 	// Description to be added to item names (e.g. "IRON sword", "lump of IRON", "IRON ingot")
@@ -138,7 +144,7 @@ public class Smaterial
 	public Smaterial setMeltingPoint(int meltingPoint) { this.meltingPoint = meltingPoint; return this; }
 	
 	// Can you make beads from it?
-	private boolean makesBeads = false;
+	private boolean makesBeads = true;
 	public boolean canMakeBeads() { return makesBeads; }
 	public Smaterial setMakesBeads(boolean makesBeads) { this.makesBeads = makesBeads; return this; }
 	

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
+import naftoreiclag.blocksmith.tangible.putty.Bead;
+import naftoreiclag.blocksmith.tangible.putty.Lump;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 
@@ -33,9 +35,20 @@ public class Smaterial
 	public String getFriendlyAdjective() { return friendlyAdjective; }
 	public Smaterial setFriendlyAdjective(String friendlyAdjective) { this.friendlyAdjective = friendlyAdjective; return this; }
 	
+	// Aliases for beads (e.g. call Diamond Beads "Diamond Pebbles" instead, if you want to)
+	private String friendlyBeadAlias = "Bead";
+	public String getFriendlyBeadAlias() { return friendlyBeadAlias; }
+	public Smaterial setFriendlyBeadAlias(String friendlyBeadAlias) { this.friendlyBeadAlias = friendlyBeadAlias; return this; }
+	
 	// At what temperature are lumps made (negative values indicate a non-lumpable form)
 	private int meltingPoint = 500;
+	public int getMeltingPoint() { return meltingPoint; }
 	public Smaterial setMeltingPoint(int meltingPoint) { this.meltingPoint = meltingPoint; return this; }
+	
+	// Can you make beads from it?
+	private boolean makesBeads = false;
+	public boolean canMakeBeads() { return makesBeads; }
+	public Smaterial setMakesBeads(boolean makesBeads) { this.makesBeads = makesBeads; return this; }
 	
 	// Whether you can make handles
 	private boolean makesHandles = true;
@@ -96,15 +109,34 @@ public class Smaterial
 	
 	// Different forms this smaterial can assume
 	@SideOnly(Side.CLIENT)
-	public Icon iconLump;
+	public Icon iconBead;
 	@SideOnly(Side.CLIENT)
-	public Icon iconLumpThin;
+	public Icon iconLump;
+	//@SideOnly(Side.CLIENT)
+	//public Icon iconLumpThin;
 
 	// Registers them when appropriate
 	@SideOnly(Side.CLIENT)
 	protected void registerIcon(IconRegister iconRegister)
 	{
-		iconLump = iconRegister.registerIcon(ModBlocksmith.modid + ":lump_" + internalName);
-		iconLumpThin = iconRegister.registerIcon(ModBlocksmith.modid + ":lumpThin_" + internalName);
+		if(isValidForLumps())
+		{
+			iconLump = iconRegister.registerIcon(ModBlocksmith.modid + ":lump_" + internalName);
+		}
+		if(isValidForBeads())
+		{
+			iconBead = iconRegister.registerIcon(ModBlocksmith.modid + ":bead_" + internalName);
+		}
+		//iconLumpThin = iconRegister.registerIcon(ModBlocksmith.modid + ":lumpThin_" + internalName);
+	}
+	
+	public boolean isValidForLumps()
+	{
+		return meltingPoint >= 0;
+	}
+	
+	public boolean isValidForBeads()
+	{
+		return makesBeads;
 	}
 }

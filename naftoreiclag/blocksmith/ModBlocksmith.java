@@ -7,7 +7,8 @@ import java.util.logging.Logger;
 
 import naftoreiclag.blocksmith.registry.RegistrySmaterial;
 import naftoreiclag.blocksmith.registry.Smaterial;
-import naftoreiclag.blocksmith.tangible.lump.Lump;
+import naftoreiclag.blocksmith.tangible.putty.Bead;
+import naftoreiclag.blocksmith.tangible.putty.Lump;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.FMLLog;
@@ -44,10 +45,13 @@ public class ModBlocksmith
 	private static Smaterial smat_gold;
 	private static Smaterial smat_tin;
 	private static Smaterial smat_silver;
+	private static Smaterial smat_diamond;
+	private static Smaterial smat_emerald;
 	private static Smaterial smat_glass;
 	
 	//
 	public static Item item_lump;
+	public static Item item_bead;
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -66,7 +70,8 @@ public class ModBlocksmith
 		logger.log(Level.INFO, "INIT EVENT");
 		
 		// lump
-		item_lump = new Lump(idOffset + 0);
+		item_lump = new Lump(idOffset + 0).setUnlocalizedName("lump");
+		item_bead = new Bead(idOffset + 1).setUnlocalizedName("bead");
 		
 		// smaterials
 		smat_iron = RegistrySmaterial.newSmaterial(0, "iron").setFriendlyAdjective("Iron").setMeltingPoint(1500); // vanilla
@@ -74,16 +79,26 @@ public class ModBlocksmith
 		smat_gold = RegistrySmaterial.newSmaterial(2, "gold").setFriendlyAdjective("Gold").setMeltingPoint(1000); // vanila
 		smat_tin = RegistrySmaterial.newSmaterial(3, "tin").setFriendlyAdjective("Tin").setMeltingPoint(250); // ic2
 		smat_silver = RegistrySmaterial.newSmaterial(4, "silver").setFriendlyAdjective("Silver").setMeltingPoint(1000); // rp2
+		smat_diamond = RegistrySmaterial.newSmaterial(5, "diamond").setFriendlyAdjective("Diamond").setMeltingPoint(-1).setMakesBeads(true); // vanilla
+		smat_emerald = RegistrySmaterial.newSmaterial(6, "emerald").setFriendlyAdjective("Emerald").setMeltingPoint(-1).setMakesBeads(true); // vanilla
 		smat_glass = RegistrySmaterial.newSmaterial(255, "glass").setFriendlyAdjective("Glass").setMeltingPoint(1500); // vanilla
 		
-		// Name all the lumps
+		// Name all the things
 		List<ItemStack> lumps = new LinkedList<ItemStack>();
 		item_lump.getSubItems(item_lump.itemID, null, lumps);
 		for(ItemStack i : lumps)
 		{
-			LanguageRegistry.addName(i, ((Lump) item_lump).getFriendlyAdjective(i.getItemDamage()) + " Lump");
+			LanguageRegistry.addName(i, ((Lump) item_lump).getCompleteFriendlyName(i.getItemDamage()));
 		}
 		GameRegistry.registerItem(item_lump, modid + ".lump");
+
+		List<ItemStack> beads = new LinkedList<ItemStack>();
+		item_bead.getSubItems(item_bead.itemID, null, beads);
+		for(ItemStack i : beads)
+		{
+			LanguageRegistry.addName(i, ((Bead) item_bead).getCompleteFriendlyName(i.getItemDamage()));
+		}
+		GameRegistry.registerItem(item_bead, modid + ".bead");
 	}
 	
 	@PostInit

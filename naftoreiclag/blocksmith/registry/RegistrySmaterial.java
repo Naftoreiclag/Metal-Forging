@@ -9,8 +9,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
-import naftoreiclag.blocksmith.tangible.lump.Lump;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.util.Icon;
 
 // Handles all loaded smaterials
 public class RegistrySmaterial
@@ -32,7 +32,7 @@ public class RegistrySmaterial
 		return s;
 	}
 	
-	// Makes a nuw unnamed smaterial (Try not to use this one)
+	// Makes a new unnamed smaterial (Try not to use this one)
 	public static Smaterial newSmaterial(int metadata)
 	{
 		return newSmaterial(metadata, "unnamedSmaterial-" + metadata);
@@ -49,8 +49,22 @@ public class RegistrySmaterial
 				s.registerIcon(iconRegister);
 			}
 			smaterialIconsRegistered = true;
+			
+			ModBlocksmith.logger.log(Level.INFO, "Smith materials finalized! Loaded " + smList.size() + " smithing materials!");
+		}
+	}
+	
+	// Returns the appropriate smaterial from the given metadata
+	public static Smaterial getSmaterialFromMetadata(int metadata)
+	{
+		for(Smaterial s : smList)
+		{
+			if(s.getMetaId() == metadata)
+			{
+				return s;
+			}
 		}
 		
-		ModBlocksmith.logger.log(Level.INFO, "Smith materials finalized! Loaded " + smList.size() + " smithing materials!");
+		return null;
 	}
 }

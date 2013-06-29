@@ -5,13 +5,22 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import naftoreiclag.blocksmith.tangible.forge.Grate;
+import naftoreiclag.blocksmith.tangible.forge.GrateRenderer;
+import naftoreiclag.blocksmith.tangible.forge.GrateTentity;
+import naftoreiclag.blocksmith.tangible.forge.GrateTentityRenderer;
 import naftoreiclag.blocksmith.tangible.putty.Bead;
 import naftoreiclag.blocksmith.tangible.putty.Lump;
 import naftoreiclag.blocksmith.vector.Smaterial;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StringTranslate;
+import net.minecraftforge.client.MinecraftForgeClient;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -42,6 +51,13 @@ public class ModBlocksmith
 	// Id offset
 	public static final int idOffset = 2013;
 	
+	//
+	public static Item item_lump;
+	public static Item item_bead;
+	
+	//
+	public static Block block_grate;
+	
 	// Do I really need these?
 	private static Smaterial smat_iron;
 	private static Smaterial smat_copper;
@@ -57,38 +73,37 @@ public class ModBlocksmith
 	private static Smaterial smat_quartz;
 	private static Smaterial smat_redstone;
 	private static Smaterial smat_steel;
+	private static Smaterial smat_pigiron;
 	private static Smaterial smat_glass;
 	
-	//
-	public static Item item_lump;
-	public static Item item_bead;
-	
-	//
-	@SideOnly(Side.CLIENT)
-	public static CreativeTabs creativetab_smithing;
-	
+	// Before mods are loaded
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		// Make the logger
 		logger = Logger.getLogger(modid);
 		logger.setParent(FMLLog.getLogger());
 		
-		logger.log(Level.INFO, "PRE INIT EVENT");
+		logSide(Level.INFO, "PRE INIT EVENT");
 		
 		// Read config files
 	}
 	
+	// Load mods
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
-		logger.log(Level.INFO, "INIT EVENT");
+		logSide(Level.INFO, "INIT EVENT");
 		
 		// creative tabs
 		registerCreativeTabs();
 		
-		// lump
+		// items
 		item_lump = new Lump(idOffset + 0).setUnlocalizedName("lump");
 		item_bead = new Bead(idOffset + 1).setUnlocalizedName("bead");
+		
+		// blocks
+		block_grate = new Grate(idOffset + 2, Material.iron).setUnlocalizedName("grate");
 		
 		// smaterials
 		smat_iron = 		Smaterial.newSmaterial(  0, "iron").setMeltingPoint(1500); // vanilla
@@ -105,13 +120,16 @@ public class ModBlocksmith
 		smat_quartz = 		Smaterial.newSmaterial( 11, "quartz").setMeltingPoint(-1); // vanilla
 		smat_redstone = 	Smaterial.newSmaterial( 12, "redstone").setMeltingPoint(-1); // vanilla
 		smat_steel = 		Smaterial.newSmaterial( 13, "steel").setMeltingPoint(2500).setMakesBeads(false); // rc
+		smat_pigiron = 		Smaterial.newSmaterial( 14, "pigIron").setMeltingPoint(1700).setMakesBeads(false).setFriendlyAdjective("Pig Iron"); // me
 		smat_glass = 		Smaterial.newSmaterial(255, "glass").setMeltingPoint(1500); // vanilla
 	}
 	
+	// Called after mods have loaded, before title screen
+	// Icons are registered here
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		logger.log(Level.INFO, "POST INIT EVENT");
+		logSide(Level.INFO, "POST INIT EVENT");
 		
 		// TODO: Interact with other mods
 		
@@ -143,9 +161,22 @@ public class ModBlocksmith
 			LanguageRegistry.addName(i, ((Bead) item_bead).getCompleteFriendlyName(i.getItemDamage()));
 		}
 		GameRegistry.registerItem(item_bead, modid + ".bead");
+		
+		// Grates
+		LanguageRegistry.addName(block_grate, "Grate");
+		GameRegistry.registerBlock(block_grate, modid + ".grate");
+		MinecraftForgeClient.registerItemRenderer(block_grate.blockID, new GrateRenderer());
+		
+		// Grate Tentity
+		GameRegistry.registerTileEntity(GrateTentity.class, modid + ".grateTileEntity");
+		ClientRegistry.bindTileEntitySpecialRenderer(GrateTentity.class, new GrateTentityRenderer());
 	}
 	
-	//
+	// Creative tabs
+	@SideOnly(Side.CLIENT)
+	public static CreativeTabs creativetab_smithing;
+	
+	// Auxilary function for registering the creative mode tabs
 	@SideOnly(Side.CLIENT)
 	private void registerCreativeTabs()
 	{
@@ -156,5 +187,31 @@ public class ModBlocksmith
 				return new ItemStack(ModBlocksmith.item_lump, 1, 13);
 			}
 		};
+	}
+	
+	public static void logSide(Level level, String msg)
+	{
+		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
+		{
+			logger.log(level, "Server: " + msg);
+		}
+		else if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+		{
+			logger.log(level, "Client: " + msg);
+		}
+		else
+		{
+			logger.log(level, msg);
+		}
+	}
+	
+	public static void logSide(String msg)
+	{
+		logSide(Level.INFO, msg);
+	}
+	
+	public static void logSide()
+	{
+		logSide(Level.INFO, "is currently being used");
 	}
 }

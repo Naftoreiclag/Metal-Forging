@@ -41,8 +41,8 @@ public class Smaterial
 				// Uh oh, someone is trying to overwrite it!
 				
 				// Warn them
-				ModBlocksmith.logger.log(Level.WARNING, "Smithing material is being overwriten! Bugs imminent! (Metadata/Metaid: " + metadata + ")");
-				ModBlocksmith.logger.log(Level.WARNING, "Attempting to replace " + s.getInternalName() + " with " + internalName + "!");
+				ModBlocksmith.logSide(Level.WARNING, "Smithing material is being overwriten! Bugs imminent! (Metadata/Metaid: " + metadata + ")");
+				ModBlocksmith.logSide(Level.WARNING, "Attempting to replace " + s.getInternalName() + " with " + internalName + "!");
 				
 				// Remove the old one
 				smList.remove(s);
@@ -54,7 +54,7 @@ public class Smaterial
 		smList.add(s);
 		
 		// Inform
-		ModBlocksmith.logger.log(Level.INFO, "Smithing material: " + internalName + " registered with metaid: " + metadata);
+		ModBlocksmith.logSide(Level.INFO, "Smithing material: " + internalName + " registered with metaid: " + metadata);
 		
 		// Return
 		return s;
@@ -78,7 +78,7 @@ public class Smaterial
 			smaterialIconsRegistered = true;
 			
 			// Inform
-			ModBlocksmith.logger.log(Level.INFO, "Smith materials finalized! Loaded " + smList.size() + " smithing materials!");
+			ModBlocksmith.logSide(Level.INFO, "Smith materials finalized! Loaded " + smList.size() + " smithing materials!");
 		}
 	}
 	
@@ -97,7 +97,7 @@ public class Smaterial
 		}
 
 		// Inform
-		ModBlocksmith.logger.log(Level.SEVERE, "Cannot find smaterial with metaId: " + metadata + "! Returning null!");
+		ModBlocksmith.logSide(Level.SEVERE, "Cannot find smaterial with metaId: " + metadata + "! Returning null!");
 		
 		// Guess we didn't find it
 		return null;

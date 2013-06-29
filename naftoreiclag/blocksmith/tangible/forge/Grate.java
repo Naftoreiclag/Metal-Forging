@@ -22,8 +22,6 @@ import net.minecraft.world.World;
 
 public class Grate extends Block
 {
-	private Icon blockIcon2;
-	private Icon blockIcon3;
 	
 	public Grate(int id, Material material)
 	{

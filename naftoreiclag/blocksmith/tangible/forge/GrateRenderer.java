@@ -11,11 +11,11 @@ import net.minecraftforge.client.IItemRenderer;
 
 public class GrateRenderer implements IItemRenderer
 {
-	private ModelGrate modelTutBox;
+	private ModelGrate model;
 	
 	public GrateRenderer()
 	{
-		modelTutBox = new ModelGrate();
+		model = new ModelGrate();
 	}
 	
 	@Override
@@ -40,7 +40,7 @@ public class GrateRenderer implements IItemRenderer
 				GL11.glPushMatrix();
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glScalef(1.0f, 1.0f, 1.0f);
-				modelTutBox.render(null, 0, 0, 0, 1, 0.0f);
+				model.render(null, 0, 0, 0, 1, 0.0f);
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glPopMatrix();
 				return;
@@ -52,7 +52,7 @@ public class GrateRenderer implements IItemRenderer
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glTranslatef(0.5f, -0.1f, 0.0f);
 				GL11.glScalef(1.12f, 1.12f, 1.12f);
-				modelTutBox.render(null, 0, 0, 0, 1, 0.0f);
+				model.render(null, 0, 0, 0, 1, 0.0f);
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glPopMatrix();
 				return;
@@ -64,7 +64,7 @@ public class GrateRenderer implements IItemRenderer
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glTranslatef(0.5f, -0.1f, 0.0f);
 				GL11.glScalef(1.12f, 1.12f, 1.12f);
-				modelTutBox.render(null, 0, 0, 0, 1, 0.0f);
+				model.render(null, 0, 0, 0, 1, 0.0f);
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glPopMatrix();
 				return;
@@ -76,7 +76,7 @@ public class GrateRenderer implements IItemRenderer
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glTranslatef(0.5f, -0.1f, 0.0f);
 				GL11.glScalef(1.12f, 1.12f, 1.12f);
-				modelTutBox.render(null, 0, 0, 0, 1, 0.0f);
+				model.render(null, 0, 0, 0, 1, 0.0f);
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glPopMatrix();
 				return;

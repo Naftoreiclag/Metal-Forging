@@ -9,11 +9,11 @@ import net.minecraft.tileentity.TileEntity;
 
 public class GrateTentityRenderer extends TileEntitySpecialRenderer
 {
-	private ModelGrate modelTutBox = new ModelGrate();
+	private ModelGrate model = new ModelGrate();
 	
 	private void renderTileEntityGrateAt(GrateTentity tileEntity, double x, double y, double z, float tick)
 	{
-		modelTutBox.render((GrateTentity) tileEntity, x, y, z, tileEntity.getBlockMetadata(), tileEntity.doorRot);
+		model.render((GrateTentity) tileEntity, x, y, z, tileEntity.getBlockMetadata(), tileEntity.doorRot);
 	}
 	
 	@Override

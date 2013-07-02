@@ -1,16 +1,9 @@
 package naftoreiclag.blocksmith.tangible.putty;
 
-import java.util.List;
-
+import naftoreiclag.blocksmith.vector.Smaterial;
+import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import naftoreiclag.blocksmith.ModBlocksmith;
-import naftoreiclag.blocksmith.vector.Smaterial;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 
 // Plain ol' lump, nothing but a way for smaterials and items to interact
 public class Lump extends Bead

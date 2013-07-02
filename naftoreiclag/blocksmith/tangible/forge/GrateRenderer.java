@@ -1,13 +1,10 @@
 package naftoreiclag.blocksmith.tangible.forge;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.FMLClientHandler;
-
-import naftoreiclag.blocksmith.ModBlocksmith;
 import naftoreiclag.blocksmith.modelclass.ModelGrate;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
+import org.lwjgl.opengl.GL11;
 
 public class GrateRenderer implements IItemRenderer
 {

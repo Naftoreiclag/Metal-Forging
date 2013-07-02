@@ -1,8 +1,5 @@
 package naftoreiclag.blocksmith.tangible.forge;
 
-import org.lwjgl.opengl.GL11;
-
-import naftoreiclag.blocksmith.ModBlocksmith;
 import naftoreiclag.blocksmith.modelclass.ModelBellow;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;

@@ -1,12 +1,8 @@
 package naftoreiclag.blocksmith.tangible.forge;
 
-import java.util.logging.Level;
-
-import naftoreiclag.blocksmith.ModBlocksmith;
 import naftoreiclag.blocksmith.lib.Sounds;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class BellowTentity extends TileEntity
 {

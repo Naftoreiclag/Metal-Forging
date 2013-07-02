@@ -6,11 +6,8 @@ import java.util.List;
 import java.util.logging.Level;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
-import naftoreiclag.blocksmith.tangible.putty.Bead;
-import naftoreiclag.blocksmith.tangible.putty.Lump;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

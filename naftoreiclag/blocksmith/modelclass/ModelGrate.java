@@ -1,14 +1,13 @@
 package naftoreiclag.blocksmith.modelclass;
 
+import naftoreiclag.blocksmith.ModBlocksmith;
+import naftoreiclag.blocksmith.tangible.forge.GrateTentity;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
+
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-
-import naftoreiclag.blocksmith.ModBlocksmith;
-import naftoreiclag.blocksmith.tangible.forge.GrateTentity;
-import net.minecraft.client.model.ModelBase;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 public class ModelGrate
 {

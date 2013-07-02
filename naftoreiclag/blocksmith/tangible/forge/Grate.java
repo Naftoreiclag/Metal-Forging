@@ -29,8 +29,6 @@ public class Grate extends Block
 	@Override
 	public int onBlockPlaced(World world, int x, int y, int z, int side, float hx, float hy, float hz, int metadata)
 	{
-		//ModBlocksmith.logSide("Block placed on side: " + side);
-		
 		switch(side)
 		{
 			case 2: return 2;
@@ -68,8 +66,6 @@ public class Grate extends Block
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
 	{
-		//ModBlocksmith.logSide("Setting block bounds");
-		
 		int m = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 		
 		switch(m)

@@ -49,17 +49,17 @@ public class ModBlocksmith
 	// Mod id
 	public static final String modid = "nrBlocksmith";
 	
-	//
+	// Logger instance
 	public static Logger logger;
 	
 	// Id offset
 	public static final int idOffset = 2013;
 	
-	//
+	// Items
 	public static Item item_lump;
 	public static Item item_bead;
 	
-	//
+	// Blocks
 	public static Block block_grate;
 	public static Block block_bellow;
 	

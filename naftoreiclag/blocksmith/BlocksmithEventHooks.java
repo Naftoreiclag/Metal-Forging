@@ -17,7 +17,6 @@ public class BlocksmithEventHooks
 		{
 			try
 			{
-				ModBlocksmith.logSide("Trying to load: " + sound);
 				event.manager.soundPoolSounds.addSound(sound, ModBlocksmith.class.getResource("/" + sound));
 			} 
 			catch (Exception e)

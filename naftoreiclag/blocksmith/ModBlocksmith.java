@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import naftoreiclag.blocksmith.lib.Sounds;
+import naftoreiclag.blocksmith.tangible.forge.Bellow;
+import naftoreiclag.blocksmith.tangible.forge.BellowRenderer;
+import naftoreiclag.blocksmith.tangible.forge.BellowTentity;
+import naftoreiclag.blocksmith.tangible.forge.BellowTentityRenderer;
 import naftoreiclag.blocksmith.tangible.forge.Grate;
 import naftoreiclag.blocksmith.tangible.forge.GrateRenderer;
 import naftoreiclag.blocksmith.tangible.forge.GrateTentity;
@@ -19,6 +24,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StringTranslate;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.sound.SoundLoadEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeSubscribe;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
@@ -57,6 +65,7 @@ public class ModBlocksmith
 	
 	//
 	public static Block block_grate;
+	public static Block block_bellow;
 	
 	// Do I really need these?
 	private static Smaterial smat_iron;
@@ -84,7 +93,11 @@ public class ModBlocksmith
 		logger = Logger.getLogger(modid);
 		logger.setParent(FMLLog.getLogger());
 		
+		// Info
 		logSide(Level.INFO, "PRE INIT EVENT");
+		
+		// Event hooks
+		registerEventHooks();
 		
 		// Read config files
 	}
@@ -104,6 +117,7 @@ public class ModBlocksmith
 		
 		// blocks
 		block_grate = new Grate(idOffset + 2, Material.iron).setUnlocalizedName("grate");
+		block_bellow = new Bellow(idOffset + 3, Material.iron).setUnlocalizedName("bellow");
 		
 		// smaterials
 		smat_iron = 		Smaterial.newSmaterial(  0, "iron").setMeltingPoint(1500); // vanilla
@@ -134,12 +148,15 @@ public class ModBlocksmith
 		// TODO: Interact with other mods
 		
 		// Name all the things
-		registerNames();
+		registerTangibles();
+		
+		// Crafting recipes
+		registerCraftingRecipes();
 	}
 
-	// Auxilary function for registering the names
+	// Auxiliary function for registering the items and blocks
 	@SideOnly(Side.CLIENT)
-	private void registerNames()
+	private void registerTangibles()
 	{
 		// Creative tabs
 		LanguageRegistry.instance().addStringLocalization("itemGroup.tabSmithing", "Smithing");
@@ -162,7 +179,7 @@ public class ModBlocksmith
 		}
 		GameRegistry.registerItem(item_bead, modid + ".bead");
 		
-		// Grates
+		// Grate
 		LanguageRegistry.addName(block_grate, "Grate");
 		GameRegistry.registerBlock(block_grate, modid + ".grate");
 		MinecraftForgeClient.registerItemRenderer(block_grate.blockID, new GrateRenderer());
@@ -170,13 +187,22 @@ public class ModBlocksmith
 		// Grate Tentity
 		GameRegistry.registerTileEntity(GrateTentity.class, modid + ".grateTileEntity");
 		ClientRegistry.bindTileEntitySpecialRenderer(GrateTentity.class, new GrateTentityRenderer());
+		
+		// Bellow
+		LanguageRegistry.addName(block_bellow, "Bellows");
+		GameRegistry.registerBlock(block_bellow, modid + ".bellow");
+		MinecraftForgeClient.registerItemRenderer(block_bellow.blockID, new BellowRenderer());
+		
+		// Bellow Tentity
+		GameRegistry.registerTileEntity(BellowTentity.class, modid + ".bellowTileEntity");
+		ClientRegistry.bindTileEntitySpecialRenderer(BellowTentity.class, new BellowTentityRenderer());
 	}
 	
 	// Creative tabs
 	@SideOnly(Side.CLIENT)
 	public static CreativeTabs creativetab_smithing;
 	
-	// Auxilary function for registering the creative mode tabs
+	// Auxiliary function for registering creative mode tabs
 	@SideOnly(Side.CLIENT)
 	private void registerCreativeTabs()
 	{
@@ -189,7 +215,30 @@ public class ModBlocksmith
 		};
 	}
 	
-	public static void logSide(Level level, String msg)
+	// Auxiliary function for registering crafting recipes
+	private void registerCraftingRecipes()
+	{
+		ItemStack ingrWoodenSlab = new ItemStack(Block.woodSingleSlab);
+		ItemStack ingrWoodenStair = new ItemStack(Block.stairsWoodOak);
+		ItemStack ingrString = new ItemStack(Item.silk);
+		ItemStack ingrRails = new ItemStack(Block.rail);
+		ItemStack ingrFence = new ItemStack(Block.fence);
+		ItemStack ingrIronBars = new ItemStack(Block.fenceIron);
+		ItemStack ingrIronDoor = new ItemStack(Item.doorIron);
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(block_grate), ingrIronBars, ingrIronDoor);
+		GameRegistry.addShapelessRecipe(new ItemStack(block_grate, 2), ingrIronBars, ingrIronBars, ingrIronDoor);
+		//GameRegistry.addRecipe(new ItemStack(block_grate), "srs", "fyf", "lsl", 's', ingrWoodenSlab, 'r', ingrRails, 'f', ingrFence, 'y', ingrString, 'l', ingrWoodenStair);
+	}
+	
+	// Auxiliary function for registering event hooks
+	private void registerEventHooks()
+	{
+		MinecraftForge.EVENT_BUS.register(new BlocksmithEventHooks());
+	}
+	
+	// Loggers that also display client or server side
+	public static void logSide(Level level, String msg) // logs message with given level
 	{
 		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
 		{
@@ -201,16 +250,14 @@ public class ModBlocksmith
 		}
 		else
 		{
-			logger.log(level, msg);
+			logger.log(level, "Null-side:" + msg);
 		}
 	}
-	
-	public static void logSide(String msg)
+	public static void logSide(String msg) // logs message with level info
 	{
 		logSide(Level.INFO, msg);
 	}
-	
-	public static void logSide()
+	public static void logSide() // logs the client or server side
 	{
 		logSide(Level.INFO, "is currently being used");
 	}

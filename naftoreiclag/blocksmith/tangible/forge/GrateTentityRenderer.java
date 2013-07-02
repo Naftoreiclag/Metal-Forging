@@ -13,7 +13,7 @@ public class GrateTentityRenderer extends TileEntitySpecialRenderer
 	
 	private void renderTileEntityGrateAt(GrateTentity tileEntity, double x, double y, double z, float tick)
 	{
-		model.render((GrateTentity) tileEntity, x, y, z, tileEntity.getBlockMetadata(), tileEntity.doorRot);
+		model.render(tileEntity, x, y, z, tileEntity.getBlockMetadata(), tileEntity.doorRot);
 	}
 	
 	@Override

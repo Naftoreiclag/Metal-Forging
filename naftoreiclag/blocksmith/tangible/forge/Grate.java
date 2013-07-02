@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
+import naftoreiclag.blocksmith.lib.Sounds;
 import naftoreiclag.blocksmith.vector.Smaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -85,56 +86,56 @@ public class Grate extends Block
 			// North
 			case 0:
 			{
-				this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.125F);
+				this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.125f);
 				return;
 			}
 			
 			// West
 			case 1:
 			{
-				this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.125F, 1.0F, 1.0F);
+				this.setBlockBounds(0.0f, 0.0f, 0.0f, 0.125f, 1.0f, 1.0f);
 				return;
 			}
 			
 			// South
 			case 2:
 			{
-				this.setBlockBounds(0.0F, 0.0F, 0.875F, 1.0F, 1.0F, 1.0F);
+				this.setBlockBounds(0.0f, 0.0f, 0.875f, 1.0f, 1.0f, 1.0f);
 				return;
 			}
 			
 			// East
 			case 3:
 			{
-				this.setBlockBounds(0.875F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				this.setBlockBounds(0.875f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
 				return;
 			}
 			
 			// Open North
 			case 4:
 			{
-				this.setBlockBounds(0.875F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				this.setBlockBounds(0.875f, 0.125f, 0.0f, 1.0f, 0.875f, 0.875f);
 				return;
 			}
 			
 			// Open West
 			case 5:
 			{
-				this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.125F);
+				this.setBlockBounds(0.0f, 0.125f, 0.0f, 0.875f, 0.875f, 0.125f);
 				return;
 			}
 			
 			// Open South
 			case 6:
 			{
-				this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.125F, 1.0F, 1.0F);
+				this.setBlockBounds(0.0f, 0.125f, 0.125f, 0.125f, 0.875f, 1.0f);
 				return;
 			}
 			
 			// Open East
 			case 7:
 			{
-				this.setBlockBounds(0.0F, 0.0F, 0.875F, 1.0F, 1.0F, 1.0F);
+				this.setBlockBounds(0.125f, 0.125f, 0.875f, 1.0f, 0.875f, 1.0f);
 				return;
 			}
 			
@@ -168,7 +169,18 @@ public class Grate extends Block
 		
 		newState = (state + 4) % 8;
 		
+		
+		if(newState < 4)
+		{
+			world.playSoundEffect(x + 0.5d, y + 0.5d, z + 0.5d, Sounds.GRATE_CLOSE, 1.0f, world.rand.nextFloat() * 0.1f + 0.9f);
+		}
+		else
+		{
+			world.playSoundEffect(x + 0.5d, y + 0.5d, z + 0.5d, Sounds.GRATE_OPEN, 1.0f, world.rand.nextFloat() * 0.1f + 0.9f);
+		}
+		
 		world.setBlockMetadataWithNotify(x, y, z, newState, 1 + 2);
+
 		
 		return true;
 	}

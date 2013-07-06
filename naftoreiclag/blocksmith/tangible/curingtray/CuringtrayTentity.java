@@ -1,8 +1,11 @@
 package naftoreiclag.blocksmith.tangible.curingtray;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
+import naftoreiclag.blocksmith.tangible.misc.ItemMisc;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -14,6 +17,12 @@ public class CuringtrayTentity extends TileEntity implements IInventory
 	public static final String STORAGE_KEY = "Storage";
 	public static final String SLOT_KEY = "Slot";
 	
+	private boolean canCook = false;
+	public boolean canSeeSun = true;
+	protected int cookProgress = 0; // out of 216000
+	protected int waterLevel = 0; // out of 360
+	protected int catalyst = 0;
+	
 	// My storage
 	private ItemStack[] storage = new ItemStack[CuringtrayContainer.size];
 
@@ -23,6 +32,97 @@ public class CuringtrayTentity extends TileEntity implements IInventory
 	@Override
 	public void closeChest() {}
 
+	/** MACHINERY **/
+	
+	@Override
+	public void updateEntity()
+	{
+		if(worldObj.getTotalWorldTime() % 80L == 0L)
+        {
+			canSeeSun = worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord);
+        }
+		
+		if(canCook && canSeeSun)
+		{
+			cookProgress += 20 + catalyst;
+			
+			if(cookProgress >= 216000)
+			{
+				storage[0].stackSize --;
+				
+				if(storage[0].stackSize <= 0)
+				{
+					storage[0] = null;
+				}
+				
+				if(storage[9] == null)
+				{
+					storage[9] = new ItemStack(ModBlocksmith.item_misc, 1, ItemMisc.CURED_LEATHER);
+				}
+				else
+				{
+					storage[9].stackSize ++;
+				}
+				
+				updateCanCook();
+				
+				cookProgress = cookProgress - 216000;
+			}
+		}
+	}
+	
+	public void stopCooking() { canCook = false; cookProgress = 0; updateMetadata();}
+	public void startCooking() { canCook = true; }
+	
+	public void updateCanCook()
+	{
+		if(storage[0] != null)
+		{
+			if(storage[0].itemID == Item.leather.itemID)
+			{
+				startCooking();
+			}
+			else
+			{
+				stopCooking();
+			}
+		}
+		else
+		{
+			stopCooking();
+		}
+	}
+	
+	public void updateCatalyst()
+	{
+		catalyst = 0;
+		for(int index = 1; index < 9; index ++)
+		{
+			if(storage[index] != null)
+			{
+				catalyst += itemIdToCatalystAmount(storage[index].itemID, storage[index].getItemDamage());
+			}
+		}
+	}
+	
+	public static int itemIdToCatalystAmount(int id, int metadata)
+	{
+		return
+			id == Block.cobblestone.blockID ? 11 :
+			id == Block.stone.blockID ? 16 :
+			id == Block.gravel.blockID ? 27 :
+			id == Block.cobblestoneMossy.blockID ? 38 :
+			id == Block.grass.blockID ? 44 :
+			id == Block.stoneBrick.blockID && metadata == 1 ? 49 :
+			id == Block.sponge.blockID ? 60 :
+			0;
+	}
+	
+	private void updateMetadata()
+	{
+		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, canCook ? 1 : 0, 2);
+	}
+	
 	/** READIN AND WRITIN **/
 	
 	// Called when loading the tile entity
@@ -116,6 +216,18 @@ public class CuringtrayTentity extends TileEntity implements IInventory
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack newItemStack)
 	{
+		if(storage[slot] == null)
+		{
+			if(newItemStack == null)
+			{
+				return;
+			}
+		}
+		else if(storage[slot].equals(newItemStack))
+		{
+			return;
+		}
+		
 		// lol
 		storage[slot] = newItemStack;
 		
@@ -125,6 +237,13 @@ public class CuringtrayTentity extends TileEntity implements IInventory
 			// Fix it
 			newItemStack.stackSize = getInventoryStackLimit();
 		}
+		
+		// Update the catalyst
+		updateCatalyst();
+		
+		updateCanCook();
+		
+		
 	}
 	
 	// Decrease the size of a stack

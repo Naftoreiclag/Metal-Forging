@@ -13,10 +13,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class CuringtrayGui extends GuiContainer
 {
+	private CuringtrayTentity tileEntity;
+	
 	public CuringtrayGui(InventoryPlayer inventoryPlayer, CuringtrayTentity tileEntity)
 	{
 		// Make a new container and then give it to the super class
 		super(new CuringtrayContainer(inventoryPlayer, tileEntity));
+		
+		this.tileEntity = tileEntity;
 	}
 
 	// Draw everything rendered in the layer "above" the items
@@ -27,7 +31,7 @@ public class CuringtrayGui extends GuiContainer
 		// (4210752 is the color...)
 		
 		// Reminds me of the good ol' days of Game Maker
-		fontRenderer.drawString("Curing Tray", 8, 6, 4210752);
+		fontRenderer.drawString("Curing Tray " + tileEntity.catalyst, 8, 6, 4210752);
 		
 		// draws "Inventory" or your regional equivalent
 		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
@@ -43,6 +47,11 @@ public class CuringtrayGui extends GuiContainer
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+		drawTexturedModalRect(x + 89, y + 35, 176, 14, (23 * tileEntity.cookProgress / 216000), 16);
+		if(tileEntity.canSeeSun)
+		{
+			drawTexturedModalRect(x + 93, y + 17, 176, 0, 14, 14);
+		}
 	}
 
 }

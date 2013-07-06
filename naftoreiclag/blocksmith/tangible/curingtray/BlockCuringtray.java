@@ -40,9 +40,9 @@ public class BlockCuringtray extends BlockContainer
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public Icon getIcon(int par1, int par2)
+	public Icon getIcon(int side, int metadata)
 	{
-		return par1 == 1 ? icon_top : (par1 == 0 ? icon_bottom : icon_side);
+		return side == 1 ? (metadata == 0 ? icon_top : icon_topLeather) : (side == 0 ? icon_bottom : icon_side);
 	}
 	
 	// When you right-click it

@@ -13,10 +13,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 // Copied from lump
-public class Bead extends Item
+public class ItemBead extends Item
 {
 	// Constructor
-	public Bead(int id)
+	public ItemBead(int id)
 	{
 		super(id);
 		setHasSubtypes(true);

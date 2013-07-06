@@ -6,10 +6,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 // Plain ol' lump, nothing but a way for smaterials and items to interact
-public class Lump extends Bead
+public class ItemLump extends ItemBead
 {
 	// Constructor
-	public Lump(int id)
+	public ItemLump(int id)
 	{
 		super(id);
 	}

@@ -1,4 +1,4 @@
-package naftoreiclag.blocksmith.tangible.forge;
+package naftoreiclag.blocksmith.tangible.grate;
 
 import naftoreiclag.blocksmith.modelclass.ModelGrate;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

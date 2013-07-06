@@ -1,7 +1,7 @@
 package naftoreiclag.blocksmith.modelclass;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
-import naftoreiclag.blocksmith.tangible.forge.BellowTentity;
+import naftoreiclag.blocksmith.tangible.bellow.BellowTentity;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
@@ -38,7 +38,14 @@ public class ModelBellow
 		GL11.glScalef(0.5f, 0.5f, 0.5f);
 		
 		// Texture
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture("/mods/" + ModBlocksmith.modid + "/textures/models/bellows.png");
+		/*switch(material)
+		{
+			case 0: FMLClientHandler.instance().getClient().renderEngine.bindTexture("/mods/" + ModBlocksmith.modid + "/textures/models/bellowsPaper.png"); break;
+			case 1: FMLClientHandler.instance().getClient().renderEngine.bindTexture("/mods/" + ModBlocksmith.modid + "/textures/models/bellowsLeather.png"); break;
+			case 2: FMLClientHandler.instance().getClient().renderEngine.bindTexture("/mods/" + ModBlocksmith.modid + "/textures/models/bellowsTanned.png"); break;
+		}*/
+		
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture("/mods/" + ModBlocksmith.modid + "/textures/models/bellowsTanned.png");
 		
 		/*
 		 * BASE

@@ -1,4 +1,4 @@
-package naftoreiclag.blocksmith.tangible.forge;
+package naftoreiclag.blocksmith.tangible.grate;
 
 import java.util.logging.Level;
 

@@ -5,21 +5,26 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import naftoreiclag.blocksmith.tangible.forge.Bellow;
-import naftoreiclag.blocksmith.tangible.forge.BellowRenderer;
-import naftoreiclag.blocksmith.tangible.forge.BellowTentity;
-import naftoreiclag.blocksmith.tangible.forge.BellowTentityRenderer;
-import naftoreiclag.blocksmith.tangible.forge.Grate;
-import naftoreiclag.blocksmith.tangible.forge.GrateRenderer;
-import naftoreiclag.blocksmith.tangible.forge.GrateTentity;
-import naftoreiclag.blocksmith.tangible.forge.GrateTentityRenderer;
-import naftoreiclag.blocksmith.tangible.putty.Bead;
-import naftoreiclag.blocksmith.tangible.putty.Lump;
+import naftoreiclag.blocksmith.tangible.bellow.BellowRenderer;
+import naftoreiclag.blocksmith.tangible.bellow.BellowTentity;
+import naftoreiclag.blocksmith.tangible.bellow.BellowTentityRenderer;
+import naftoreiclag.blocksmith.tangible.bellow.BlockBellow;
+import naftoreiclag.blocksmith.tangible.curingtray.BlockCuringtray;
+import naftoreiclag.blocksmith.tangible.curingtray.CuringtrayGuiHandler;
+import naftoreiclag.blocksmith.tangible.curingtray.CuringtrayTentity;
+import naftoreiclag.blocksmith.tangible.grate.BlockGrate;
+import naftoreiclag.blocksmith.tangible.grate.GrateRenderer;
+import naftoreiclag.blocksmith.tangible.grate.GrateTentity;
+import naftoreiclag.blocksmith.tangible.grate.GrateTentityRenderer;
+import naftoreiclag.blocksmith.tangible.misc.ItemMisc;
+import naftoreiclag.blocksmith.tangible.putty.ItemBead;
+import naftoreiclag.blocksmith.tangible.putty.ItemLump;
 import naftoreiclag.blocksmith.vector.Smaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,12 +33,14 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -46,8 +53,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 // This is where the magic happens
 public class ModBlocksmith
 {
-	// Mod id
+	// Mod Id
 	public static final String modid = "nrBlocksmith";
+	
+	// Mod Instance
+	@Instance(modid)
+	public static ModBlocksmith instance;
 	
 	// Logger instance
 	public static Logger logger;
@@ -58,10 +69,12 @@ public class ModBlocksmith
 	// Items
 	public static Item item_lump;
 	public static Item item_bead;
+	public static Item item_misc;
 	
 	// Blocks
 	public static Block block_grate;
 	public static Block block_bellow;
+	public static Block block_curingtray;
 	
 	// Do I really need these?
 	private static Smaterial smat_iron;
@@ -108,12 +121,14 @@ public class ModBlocksmith
 		registerCreativeTabs();
 		
 		// items
-		item_lump = new Lump(idOffset + 0).setUnlocalizedName("lump");
-		item_bead = new Bead(idOffset + 1).setUnlocalizedName("bead");
+		item_lump = new ItemLump(idOffset + 0).setUnlocalizedName("lump");
+		item_bead = new ItemBead(idOffset + 1).setUnlocalizedName("bead");
+		item_misc = new ItemMisc(idOffset + 4).setUnlocalizedName("miscItem");
 		
 		// blocks
-		block_grate = new Grate(idOffset + 2, Material.iron).setUnlocalizedName("grate");
-		block_bellow = new Bellow(idOffset + 3, Material.iron).setUnlocalizedName("bellow");
+		block_grate = new BlockGrate(idOffset + 2, Material.iron).setUnlocalizedName("grate");
+		block_bellow = new BlockBellow(idOffset + 3, Material.iron).setUnlocalizedName("bellow");
+		block_curingtray = new BlockCuringtray(idOffset + 6, Material.iron).setUnlocalizedName("curingtray");
 		
 		// smaterials
 		smat_iron = 		Smaterial.newSmaterial(  0, "iron").setMeltingPoint(1500); // vanilla
@@ -132,6 +147,8 @@ public class ModBlocksmith
 		smat_steel = 		Smaterial.newSmaterial( 13, "steel").setMeltingPoint(2500).setMakesBeads(false); // rc
 		smat_pigiron = 		Smaterial.newSmaterial( 14, "pigIron").setMeltingPoint(1700).setMakesBeads(false).setFriendlyAdjective("Pig Iron"); // me
 		smat_glass = 		Smaterial.newSmaterial(255, "glass").setMeltingPoint(1500); // vanilla
+
+		
 	}
 	
 	// Called after mods have loaded, before title screen
@@ -150,6 +167,8 @@ public class ModBlocksmith
 		registerCraftingRecipes();
 	}
 
+	/** AUXILIARY FUNCTIONS **/
+	
 	// Auxiliary function for registering the items and blocks
 	@SideOnly(Side.CLIENT)
 	private void registerTangibles()
@@ -162,7 +181,7 @@ public class ModBlocksmith
 		item_lump.getSubItems(item_lump.itemID, null, lumps);
 		for(ItemStack i : lumps)
 		{
-			LanguageRegistry.addName(i, ((Lump) item_lump).getCompleteFriendlyName(i.getItemDamage()));
+			LanguageRegistry.addName(i, ((ItemLump) item_lump).getCompleteFriendlyName(i.getItemDamage()));
 		}
 		GameRegistry.registerItem(item_lump, modid + ".lump");
 
@@ -171,7 +190,7 @@ public class ModBlocksmith
 		item_bead.getSubItems(item_bead.itemID, null, beads);
 		for(ItemStack i : beads)
 		{
-			LanguageRegistry.addName(i, ((Bead) item_bead).getCompleteFriendlyName(i.getItemDamage()));
+			LanguageRegistry.addName(i, ((ItemBead) item_bead).getCompleteFriendlyName(i.getItemDamage()));
 		}
 		GameRegistry.registerItem(item_bead, modid + ".bead");
 		
@@ -180,7 +199,7 @@ public class ModBlocksmith
 		GameRegistry.registerBlock(block_grate, modid + ".grate");
 		MinecraftForgeClient.registerItemRenderer(block_grate.blockID, new GrateRenderer());
 		
-		// Grate Tentity
+		// Grate Tile Entity
 		GameRegistry.registerTileEntity(GrateTentity.class, modid + ".grateTileEntity");
 		ClientRegistry.bindTileEntitySpecialRenderer(GrateTentity.class, new GrateTentityRenderer());
 		
@@ -189,9 +208,26 @@ public class ModBlocksmith
 		GameRegistry.registerBlock(block_bellow, modid + ".bellow");
 		MinecraftForgeClient.registerItemRenderer(block_bellow.blockID, new BellowRenderer());
 		
-		// Bellow Tentity
+		// Bellow Tile Entity
 		GameRegistry.registerTileEntity(BellowTentity.class, modid + ".bellowTileEntity");
 		ClientRegistry.bindTileEntitySpecialRenderer(BellowTentity.class, new BellowTentityRenderer());
+		
+		// Misc Items
+		for(int i = 1; i < ItemMisc.unlocalizedNames.length; i ++)
+		{
+			LanguageRegistry.addName(new ItemStack(item_misc.itemID, 1, i), ItemMisc.friendlyNames[i]);
+		}
+		GameRegistry.registerItem(item_misc, modid + ".miscItem");
+		
+		// Curing Tray
+		LanguageRegistry.addName(block_curingtray, "Curing Tray");
+		GameRegistry.registerBlock(block_curingtray, modid + ".curingtray");
+		
+		// Curing Tray Tile Entity
+		GameRegistry.registerTileEntity(CuringtrayTentity.class, modid + ".curingtrayTileEntity");
+		
+		// Curing Tray Gui
+		NetworkRegistry.instance().registerGuiHandler(this, new CuringtrayGuiHandler());
 	}
 	
 	// Creative tabs
@@ -224,7 +260,6 @@ public class ModBlocksmith
 		
 		GameRegistry.addShapelessRecipe(new ItemStack(block_grate), ingrIronBars, ingrIronDoor);
 		GameRegistry.addShapelessRecipe(new ItemStack(block_grate, 2), ingrIronBars, ingrIronBars, ingrIronDoor);
-		//GameRegistry.addRecipe(new ItemStack(block_grate), "srs", "fyf", "lsl", 's', ingrWoodenSlab, 'r', ingrRails, 'f', ingrFence, 'y', ingrString, 'l', ingrWoodenStair);
 	}
 	
 	// Auxiliary function for registering event hooks
@@ -232,6 +267,8 @@ public class ModBlocksmith
 	{
 		MinecraftForge.EVENT_BUS.register(new BlocksmithEventHooks());
 	}
+	
+	/** LOGGER **/
 	
 	// Loggers that also display client or server side
 	public static void logSide(Level level, String msg) // logs message with given level

@@ -1,9 +1,10 @@
-package naftoreiclag.blocksmith.tangible.forge;
+package naftoreiclag.blocksmith.tangible.grate;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
 import naftoreiclag.blocksmith.lib.Sounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -12,10 +13,10 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class Grate extends Block
+public class BlockGrate extends Block
 {
 	
-	public Grate(int id, Material material)
+	public BlockGrate(int id, Material material)
 	{
 		super(id, material);
 		setStepSound(soundMetalFootstep);
@@ -182,5 +183,12 @@ public class Grate extends Block
 	public TileEntity createTileEntity(World world, int metadata)
 	{
 		return new GrateTentity();
+	}
+	
+	// Icon
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		this.blockIcon = par1IconRegister.registerIcon(ModBlocksmith.modid + ":grate");
 	}
 }

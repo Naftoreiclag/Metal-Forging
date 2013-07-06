@@ -1,7 +1,7 @@
 package naftoreiclag.blocksmith.modelclass;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
-import naftoreiclag.blocksmith.tangible.forge.GrateTentity;
+import naftoreiclag.blocksmith.tangible.grate.GrateTentity;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 

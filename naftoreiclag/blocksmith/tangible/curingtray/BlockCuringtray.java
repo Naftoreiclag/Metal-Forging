@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+// TODO: This place is a mess. CLEAN IT UP
 public class BlockCuringtray extends BlockContainer
 {
 	private static Icon icon_top;

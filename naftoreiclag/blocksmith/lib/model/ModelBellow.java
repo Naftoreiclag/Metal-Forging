@@ -1,4 +1,4 @@
-package naftoreiclag.blocksmith.modelclass;
+package naftoreiclag.blocksmith.lib.model;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
 import naftoreiclag.blocksmith.tangible.bellow.BellowTentity;

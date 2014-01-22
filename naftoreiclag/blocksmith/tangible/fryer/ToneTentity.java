@@ -1,6 +1,7 @@
-package naftoreiclag.blocksmith.tangible.curingtray;
+package naftoreiclag.blocksmith.tangible.fryer;
 
 import naftoreiclag.blocksmith.ModBlocksmith;
+import naftoreiclag.blocksmith.tangible.curingtray.CuringtrayContainer;
 import naftoreiclag.blocksmith.tangible.misc.ItemMisc;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,17 +12,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 
-public class CuringtrayTentity extends TileEntity implements IInventory
+public class ToneTentity extends TileEntity implements IInventory
 {
 	// The nbt keys
 	public static final String STORAGE_KEY = "Storage";
 	public static final String SLOT_KEY = "Slot";
-	
-	private boolean canCook = false;
-	public boolean canSeeSun = true;
-	protected int cookProgress = 0; // out of 216000
-	protected int waterLevel = 0; // out of 360
-	protected int catalyst = 0;
 	
 	// My storage
 	private ItemStack[] storage = new ItemStack[CuringtrayContainer.size];
@@ -31,97 +26,6 @@ public class CuringtrayTentity extends TileEntity implements IInventory
 	public void openChest() {}
 	@Override
 	public void closeChest() {}
-
-	/** MACHINERY **/
-	
-	@Override
-	public void updateEntity()
-	{
-		if(worldObj.getTotalWorldTime() % 80L == 0L)
-        {
-			canSeeSun = worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord);
-        }
-		
-		if(canCook && canSeeSun)
-		{
-			cookProgress += 93 + catalyst;
-			
-			if(cookProgress >= 1000000)
-			{
-				storage[0].stackSize --;
-				
-				if(storage[0].stackSize <= 0)
-				{
-					storage[0] = null;
-				}
-				
-				if(storage[9] == null)
-				{
-					storage[9] = new ItemStack(ModBlocksmith.item_misc, 1, ItemMisc.CURED_LEATHER);
-				}
-				else
-				{
-					storage[9].stackSize ++;
-				}
-				
-				updateCanCook();
-				
-				cookProgress = cookProgress - 1000000;
-			}
-		}
-	}
-	
-	public void stopCooking() { canCook = false; cookProgress = 0; updateMetadata();}
-	public void startCooking() { canCook = true; }
-	
-	public void updateCanCook()
-	{
-		if(storage[0] != null)
-		{
-			if(storage[0].itemID == Item.leather.itemID)
-			{
-				startCooking();
-			}
-			else
-			{
-				stopCooking();
-			}
-		}
-		else
-		{
-			stopCooking();
-		}
-	}
-	
-	public void updateCatalyst()
-	{
-		catalyst = 0;
-		for(int index = 1; index < 9; index ++)
-		{
-			if(storage[index] != null)
-			{
-				catalyst += itemIdToCatalystAmount(storage[index].itemID, storage[index].getItemDamage());
-			}
-		}
-	}
-	
-	public static int itemIdToCatalystAmount(int id, int metadata)
-	{
-		return
-			id == Block.cobblestone.blockID ? 1 :
-			id == Block.stone.blockID ? 3 :
-			id == Block.gravel.blockID ? 9 :
-			id == Block.cobblestoneMossy.blockID ? 22 :
-			id == Block.grass.blockID ? 30 :
-			id == Block.stoneBrick.blockID && metadata == 1 ? 40 :
-			id == Block.sponge.blockID ? 92 :
-			0;
-	}
-	
-	private void updateMetadata()
-	{
-		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, canCook ? 1 : 0, 2);
-	}
 	
 	/** READIN AND WRITIN **/
 	
@@ -196,7 +100,7 @@ public class CuringtrayTentity extends TileEntity implements IInventory
 	
 	// The internal name of this inventory; must be same as the string used when registering
 	@Override
-	public String getInvName() { return ModBlocksmith.modid + ".curingtrayTileEntity"; }
+	public String getInvName() { return ModBlocksmith.modid + ".toneTileEntity"; }
 	
 	// Get how many slots are in this inventory
 	@Override
@@ -237,13 +141,6 @@ public class CuringtrayTentity extends TileEntity implements IInventory
 			// Fix it
 			newItemStack.stackSize = getInventoryStackLimit();
 		}
-		
-		// Update the catalyst
-		updateCatalyst();
-		
-		updateCanCook();
-		
-		
 	}
 	
 	// Decrease the size of a stack

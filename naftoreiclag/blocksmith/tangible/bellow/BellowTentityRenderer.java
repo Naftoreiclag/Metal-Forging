@@ -1,6 +1,6 @@
 package naftoreiclag.blocksmith.tangible.bellow;
 
-import naftoreiclag.blocksmith.modelclass.ModelBellow;
+import naftoreiclag.blocksmith.lib.model.ModelBellow;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 

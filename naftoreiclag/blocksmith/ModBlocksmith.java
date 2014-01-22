@@ -12,10 +12,14 @@ import naftoreiclag.blocksmith.tangible.bellow.BlockBellow;
 import naftoreiclag.blocksmith.tangible.curingtray.BlockCuringtray;
 import naftoreiclag.blocksmith.tangible.curingtray.CuringtrayGuiHandler;
 import naftoreiclag.blocksmith.tangible.curingtray.CuringtrayTentity;
+import naftoreiclag.blocksmith.tangible.fryer.BlockTone;
+import naftoreiclag.blocksmith.tangible.fryer.ToneGuiHandler;
+import naftoreiclag.blocksmith.tangible.fryer.ToneTentity;
 import naftoreiclag.blocksmith.tangible.grate.BlockGrate;
 import naftoreiclag.blocksmith.tangible.grate.GrateRenderer;
 import naftoreiclag.blocksmith.tangible.grate.GrateTentity;
 import naftoreiclag.blocksmith.tangible.grate.GrateTentityRenderer;
+import naftoreiclag.blocksmith.tangible.magnifyingglass.ItemMagnifyingGlass;
 import naftoreiclag.blocksmith.tangible.misc.ItemMisc;
 import naftoreiclag.blocksmith.tangible.putty.ItemBead;
 import naftoreiclag.blocksmith.tangible.putty.ItemLump;
@@ -70,11 +74,13 @@ public class ModBlocksmith
 	public static Item item_lump;
 	public static Item item_bead;
 	public static Item item_misc;
+	public static Item item_magnifyingGlass;
 	
 	// Blocks
 	public static Block block_grate;
 	public static Block block_bellow;
 	public static Block block_curingtray;
+	public static Block block_tone;
 	
 	// Do I really need these?
 	private static Smaterial smat_iron;
@@ -124,11 +130,13 @@ public class ModBlocksmith
 		item_lump = new ItemLump(idOffset + 0).setUnlocalizedName("lump");
 		item_bead = new ItemBead(idOffset + 1).setUnlocalizedName("bead");
 		item_misc = new ItemMisc(idOffset + 4).setUnlocalizedName("miscItem");
+		item_magnifyingGlass = new ItemMagnifyingGlass(idOffset + 7).setUnlocalizedName("magnifyingGlass");
 		
 		// blocks
 		block_grate = new BlockGrate(idOffset + 2, Material.iron).setUnlocalizedName("grate");
 		block_bellow = new BlockBellow(idOffset + 3, Material.iron).setUnlocalizedName("bellow");
 		block_curingtray = new BlockCuringtray(idOffset + 6, Material.iron).setUnlocalizedName("curingtray");
+		block_tone = new BlockTone(idOffset + 8, Material.iron).setUnlocalizedName("testOne");
 		
 		// smaterials
 		smat_iron = 		Smaterial.newSmaterial(  0, "iron").setMeltingPoint(1500); // vanilla
@@ -228,6 +236,20 @@ public class ModBlocksmith
 		
 		// Curing Tray Gui
 		NetworkRegistry.instance().registerGuiHandler(this, new CuringtrayGuiHandler());
+		
+		// Magnifying Glass
+		LanguageRegistry.addName(item_magnifyingGlass, "Magnifying Glass");
+		GameRegistry.registerItem(item_misc, modid + ".magnifyingGlass");
+		
+		// Tone
+		LanguageRegistry.addName(block_tone, "Test One");
+		GameRegistry.registerBlock(block_tone, modid + ".testOne");
+		
+		// Tone Tile Entity
+		GameRegistry.registerTileEntity(ToneTentity.class, modid + ".testOneTileEntity");
+		
+		// Tone Gui
+		NetworkRegistry.instance().registerGuiHandler(this, new ToneGuiHandler());
 	}
 	
 	// Creative tabs

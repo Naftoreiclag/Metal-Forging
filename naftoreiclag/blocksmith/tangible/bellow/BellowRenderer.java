@@ -1,6 +1,6 @@
 package naftoreiclag.blocksmith.tangible.bellow;
 
-import naftoreiclag.blocksmith.modelclass.ModelBellow;
+import naftoreiclag.blocksmith.lib.model.ModelBellow;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
